@@ -21,7 +21,7 @@ The project has been refactored into a clean, professional structure to separate
 │   └── invoice_added.png
 │
 ├── source_code/                 # Executable code and configurations
-│   ├── legacy_web_app/          # Dockerized Python Flask App (Tool 2)
+│   ├── invoice_management_system/          # Dockerized Python Flask App (Tool 2)
 │   │   ├── app.py
 │   │   ├── Dockerfile
 │   │   ├── docker-compose.yml
@@ -57,7 +57,7 @@ To run the automated tests, the legacy application must be running first (see To
 We have containerized a legacy Python application to run in an isolated environment.
 1. Navigate to the legacy app directory:
    ```bash
-   cd source_code/legacy_web_app
+   cd source_code/invoice_management_system
    ```
 2. Build and run the container:
    ```bash

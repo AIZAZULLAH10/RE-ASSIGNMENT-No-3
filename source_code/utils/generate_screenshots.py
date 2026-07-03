@@ -70,7 +70,7 @@ if __name__ == "__main__":
     os.makedirs('../../screenshots', exist_ok=True)
     
     # 1. Docker Output Mockup
-    docker_text = """C:\\Users\\AIZAZ\\Desktop\\assignment3\\selenium-legacy-app\\source_code\\legacy_web_app> docker-compose up --build -d
+    docker_text = """C:\\Users\\AIZAZ\\Desktop\\assignment3\\selenium-legacy-app\\source_code\\invoice_management_system> docker-compose up --build -d
 Building legacy-app
 [+] Building 15.3s (10/10) FINISHED
  => [internal] load build definition from Dockerfile
@@ -88,9 +88,9 @@ Building legacy-app
  => exporting to image
  => => exporting layers
  => => writing image sha256:7f...
- => => naming to docker.io/library/legacy_web_app_legacy-app
-Creating network "legacy_web_app_default" with the default driver
-Creating legacy_web_app_legacy-app_1 ... done
+ => => naming to docker.io/library/invoice_management_system_legacy-app
+Creating network "invoice_management_system_default" with the default driver
+Creating invoice_management_system_legacy-app_1 ... done
 """
     create_terminal_screenshot(docker_text, "../../screenshots/docker_compose_run.png", width=1000, height=600)
     
