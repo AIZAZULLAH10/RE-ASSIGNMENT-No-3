@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legacy Invoice System - Add Invoice</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Courier New', monospace;
+            background: #f5f5f5;
+        }
+        .header {
+            background: #333;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 { font-size: 16px; }
+        .nav {
+            background: #444;
+            padding: 0 30px;
+        }
+        .nav a {
+            color: #ccc;
+            text-decoration: none;
+            padding: 12px 20px;
+            display: inline-block;
+            font-size: 12px;
+            border-right: 1px solid #555;
+        }
+        .nav a:hover, .nav a.active {
+            background: #555;
+            color: white;
+        }
+        .container {
+            padding: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .form-container {
+            background: white;
+            border: 1px solid #ccc;
+            padding: 30px;
+            box-shadow: 3px 3px 0 #ddd;
+        }
+        .form-container h2 {
+            font-size: 14px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #333;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 12px;
+            color: #333;
+        }
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #999;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+        }
+        input:focus {
+            outline: none;
+            border-color: #333;
+        }
+        .btn-submit {
+            padding: 12px 30px;
+            background: #333;
+            color: white;
+            border: none;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .btn-submit:hover { background: #555; }
+        .error {
+            color: #c00;
+            font-size: 12px;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #fee;
+            border: 1px solid #fcc;
+        }
+        .success {
+            color: #2e7d32;
+            font-size: 12px;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #e8f5e9;
+            border: 1px solid #a5d6a7;
+        }
+        .info-panel {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e3f2fd;
+            border: 1px solid #90caf9;
+            font-size: 11px;
+        }
+        .tax-preview {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f5f5f5;
+            font-size: 12px;
+        }
+        .hidden-token { display: none; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>INVOICE MANAGEMENT SYSTEM - ADD INVOICE</h1>
+        <div style="font-size: 12px; color: #ccc;">
+            <a href="/logout" style="color: #ff9999;">Logout</a>
+        </div>
+    </div>
+
+    <div class="nav">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/add-invoice" class="active">Add Invoice</a>
+        <a href="/search-orders">Search Orders</a>
+    </div>
+
+    <div class="container">
+        <div class="form-container">
+            <h2>Create New Invoice</h2>
+
+            {% if error %}
+            <div class="error" id="errorMsg">{{ error }}</div>
+            {% endif %}
+
+            {% if success %}
+            <div class="success" id="successMsg">{{ success }}</div>
+            {% endif %}
+
+            <form id="invoiceForm" method="POST" action="/add-invoice">
+                <input type="hidden" name="form_token" value="{{ token }}" class="hidden-token" id="formToken">
+
+                <div class="form-group">
+                    <label for="customer">Customer Name:</label>
+                    <input type="text" id="customer" name="customer" placeholder="Enter customer name">
+                </div>
+
+                <div class="form-group">
+                    <label for="amount">Amount ($):</label>
+                    <input type="number" id="amount" name="amount" step="0.01" placeholder="0.00">
+                    <div class="tax-preview" id="taxPreview">
+                        Tax (10%): $0.00 | Total: $0.00
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit" id="submitBtn">CREATE INVOICE</button>
+            </form>
+
+            <div class="info-panel">
+                <strong>Auto-calculation:</strong> Tax is automatically calculated at 10% of the invoice amount.
+                <br><strong>Validation:</strong> Amount must be greater than zero.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Legacy inline JavaScript for auto-tax calculation and validation
+        document.getElementById('amount').addEventListener('input', function() {
+            var amount = parseFloat(this.value) || 0;
+            var tax = amount * 0.10;
+            var total = amount + tax;
+            document.getElementById('taxPreview').innerHTML =
+                'Tax (10%): $' + tax.toFixed(2) + ' | Total: $' + total.toFixed(2);
+        });
+
+        document.getElementById('invoiceForm').onsubmit = function(e) {
+            var customer = document.getElementById('customer').value.trim();
+            var amount = parseFloat(document.getElementById('amount').value);
+
+            if (customer === '') {
+                alert('Customer name is required!');
+                e.preventDefault();
+                return false;
+            }
+
+            if (isNaN(amount) || amount <= 0) {
+                alert('Please enter a valid amount greater than zero!');
+                e.preventDefault();
+                return false;
+            }
+
+            if (amount > 100000) {
+                alert('Amount exceeds maximum limit of $100,000!');
+                e.preventDefault();
+                return false;
+            }
+
+            document.getElementById('submitBtn').innerHTML = 'PROCESSING...';
+            return true;
+        };
+    </script>
+</body>
+</html>

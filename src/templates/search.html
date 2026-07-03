@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legacy Invoice System - Search Orders</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Courier New', monospace;
+            background: #f5f5f5;
+        }
+        .header {
+            background: #333;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 { font-size: 16px; }
+        .nav {
+            background: #444;
+            padding: 0 30px;
+        }
+        .nav a {
+            color: #ccc;
+            text-decoration: none;
+            padding: 12px 20px;
+            display: inline-block;
+            font-size: 12px;
+            border-right: 1px solid #555;
+        }
+        .nav a:hover, .nav a.active {
+            background: #555;
+            color: white;
+        }
+        .container {
+            padding: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .search-box {
+            background: white;
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 3px 3px 0 #ddd;
+        }
+        .search-box h2 {
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        .search-form {
+            display: flex;
+            gap: 10px;
+        }
+        .search-form input[type="text"] {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #999;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+        }
+        .search-form button {
+            padding: 12px 25px;
+            background: #333;
+            color: white;
+            border: none;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        .results-box {
+            background: white;
+            border: 1px solid #ccc;
+            padding: 20px;
+            box-shadow: 3px 3px 0 #ddd;
+        }
+        .results-box h3 {
+            font-size: 13px;
+            margin-bottom: 15px;
+            color: #666;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background: #f0f0f0;
+            font-weight: bold;
+        }
+        tr:hover { background: #f9f9f9; }
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+            font-size: 13px;
+        }
+        .status {
+            padding: 4px 10px;
+            font-size: 11px;
+            border: 1px solid;
+        }
+        .status.paid {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-color: #a5d6a7;
+        }
+        .status.pending {
+            background: #fff3e0;
+            color: #ef6c00;
+            border-color: #ffcc80;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>INVOICE MANAGEMENT SYSTEM - SEARCH ORDERS</h1>
+        <div style="font-size: 12px; color: #ccc;">
+            <a href="/logout" style="color: #ff9999;">Logout</a>
+        </div>
+    </div>
+
+    <div class="nav">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/add-invoice">Add Invoice</a>
+        <a href="/search-orders" class="active">Search Orders</a>
+    </div>
+
+    <div class="container">
+        <div class="search-box">
+            <h2>Search Invoices</h2>
+            <form class="search-form" method="POST" action="/search-orders" id="searchForm">
+                <input type="text" name="keyword" id="searchInput"
+                       placeholder="Search by customer name or invoice ID..."
+                       value="{{ keyword }}">
+                <button type="submit" id="searchBtn">SEARCH</button>
+            </form>
+        </div>
+
+        <div class="results-box">
+            <h3>Search Results ({{ results|length }} found)</h3>
+
+            {% if results %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Invoice ID</th>
+                        <th>Customer</th>
+                        <th>Amount</th>
+                        <th>Tax</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for inv in results %}
+                    <tr>
+                        <td>{{ inv.id }}</td>
+                        <td>{{ inv.customer }}</td>
+                        <td>${{ "%.2f"|format(inv.amount) }}</td>
+                        <td>${{ "%.2f"|format(inv.tax) }}</td>
+                        <td>{{ inv.date }}</td>
+                        <td><span class="status {{ inv.status }}">{{ inv.status.upper() }}</span></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="no-results">
+                No invoices found. Try a different search term.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('searchForm').onsubmit = function(e) {
+            var keyword = document.getElementById('searchInput').value.trim();
+            if (keyword === '') {
+                // Allow empty search to show all
+                return true;
+            }
+            document.getElementById('searchBtn').innerHTML = 'SEARCHING...';
+            return true;
+        };
+    </script>
+</body>
+</html>

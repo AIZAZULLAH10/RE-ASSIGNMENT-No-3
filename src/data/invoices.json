@@ -1,0 +1,66 @@
+[
+  {
+    "id": "INV-001",
+    "customer": "ABC Corp",
+    "amount": 1500.0,
+    "tax": 135.0,
+    "date": "2024-01-15",
+    "status": "paid"
+  },
+  {
+    "id": "INV-002",
+    "customer": "XYZ Ltd",
+    "amount": 2300.5,
+    "tax": 207.05,
+    "date": "2024-01-20",
+    "status": "pending"
+  },
+  {
+    "id": "INV-003",
+    "customer": "Global Tech",
+    "amount": 875.25,
+    "tax": 78.77,
+    "date": "2024-02-01",
+    "status": "paid"
+  },
+  {
+    "id": "INV-004",
+    "customer": "Test Customer",
+    "amount": 500.0,
+    "tax": 50.0,
+    "date": "2026-07-03",
+    "status": "pending"
+  },
+  {
+    "id": "INV-005",
+    "customer": "Test Customer",
+    "amount": 500.0,
+    "tax": 50.0,
+    "date": "2026-07-03",
+    "status": "pending"
+  },
+  {
+    "id": "INV-006",
+    "customer": "Test Customer",
+    "amount": 500.0,
+    "tax": 50.0,
+    "date": "2026-07-03",
+    "status": "pending"
+  },
+  {
+    "id": "INV-007",
+    "customer": "aizaz",
+    "amount": 10000.0,
+    "tax": 1000.0,
+    "date": "2026-07-04",
+    "status": "pending"
+  },
+  {
+    "id": "INV-008",
+    "customer": "Test Customer",
+    "amount": 500.0,
+    "tax": 50.0,
+    "date": "2026-07-04",
+    "status": "pending"
+  }
+]

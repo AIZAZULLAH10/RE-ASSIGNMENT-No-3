@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legacy Invoice System - Login</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Courier New', monospace;
+            background: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .login-container {
+            background: white;
+            padding: 40px;
+            border: 2px solid #333;
+            box-shadow: 5px 5px 0 #999;
+            width: 400px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 5px;
+            font-size: 20px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #999;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+        }
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #333;
+        }
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background: #333;
+            color: white;
+            border: none;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .btn-login:hover {
+            background: #555;
+        }
+        .error {
+            color: #c00;
+            font-size: 12px;
+            margin-bottom: 15px;
+            padding: 8px;
+            background: #fee;
+            border: 1px solid #fcc;
+        }
+        .hidden-token {
+            display: none;
+        }
+        .info-box {
+            margin-top: 20px;
+            padding: 10px;
+            background: #ffffcc;
+            border: 1px solid #cccc99;
+            font-size: 11px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>INVOICE MANAGEMENT SYSTEM</h1>
+        <p class="subtitle">v2.5.1 - Legacy Build 2023</p>
+
+        {% if error %}
+        <div class="error" id="errorMsg">{{ error }}</div>
+        {% endif %}
+
+        <form id="loginForm" method="POST" action="/login">
+            <input type="hidden" name="form_token" value="{{ token }}" class="hidden-token" id="formToken">
+
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" placeholder="Enter username">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Enter password">
+            </div>
+
+            <button type="submit" class="btn-login" id="loginBtn">LOGIN</button>
+        </form>
+
+        <div class="info-box">
+            <strong>System Notice:</strong> This is a legacy system. Please contact IT support for password resets.
+            <br><br>
+            Supported Browsers: Internet Explorer 8+, Chrome 20+
+        </div>
+    </div>
+
+    <script>
+        // Legacy inline JavaScript validation
+        document.getElementById('loginForm').onsubmit = function(e) {
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+
+            if (username === '' || password === '') {
+                alert('Please fill in all fields!');
+                e.preventDefault();
+                return false;
+            }
+
+            if (password.length < 4) {
+                alert('Password must be at least 4 characters!');
+                e.preventDefault();
+                return false;
+            }
+
+            // Add loading indicator
+            document.getElementById('loginBtn').innerHTML = 'AUTHENTICATING...';
+            return true;
+        };
+    </script>
+</body>
+</html>
