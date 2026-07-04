@@ -62,5 +62,13 @@
     "tax": 50.0,
     "date": "2026-07-04",
     "status": "pending"
+  },
+  {
+    "id": "INV-009",
+    "customer": "Test Customer",
+    "amount": 500.0,
+    "tax": 50.0,
+    "date": "2026-07-04",
+    "status": "pending"
   }
 ]

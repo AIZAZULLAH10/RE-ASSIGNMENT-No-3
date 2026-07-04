@@ -42,11 +42,11 @@ services:
   legacy-app:
     build: .
     ports:
-      - "8080:5000"
+      - "8081:5000"
     volumes:
       - ./data:/app/data
 ```
 **What this does:**
 * `build: .` tells Docker Compose to look for the `Dockerfile` in the same folder and build it.
-* `ports: "8080:5000"` is crucial! It maps port 5000 (where the app runs *inside* the container) to port 8080 on your actual laptop. This matches the assignment requirement to access it via `http://localhost:8080`.
+* `ports: "8081:5000"` is crucial! It maps port 5000 (where the app runs *inside* the container) to port 8081 on your actual laptop. We specifically chose 8081 because port 8080 is often in use by other system services. This allows us to access it via `http://localhost:8081`.
 * `volumes:` Maps the `data` folder inside the container to your local `data` folder so the invoices you create are saved to your actual hard drive.

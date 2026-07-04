@@ -1,0 +1,12 @@
+
+services:
+  legacy-app:
+    build:
+      context: ../app
+      dockerfile: ../docker/Dockerfile
+    container_name: legacy_invoice_system
+    ports:
+      - "8081:5000"
+    volumes:
+      - ../app/data:/app/data
+    restart: unless-stopped

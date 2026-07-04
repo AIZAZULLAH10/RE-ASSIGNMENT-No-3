@@ -11,11 +11,15 @@ Instead of installing Java and downloading the NiFi zip manually, you can run it
 1. Open your terminal in this folder.
 2. Run this command to start Apache NiFi:
    ```bash
-   docker run --name nifi -p 8080:8080 -d apache/nifi:latest
+   docker run --name nifi -p 8443:8443 -d apache/nifi:latest
    ```
 3. Wait about 1-2 minutes for NiFi to fully start up.
-4. Open your web browser and go to: `http://localhost:8080/nifi`
-
+4. Open your web browser and go to: `https://localhost:8443/nifi`
+5. NiFi automatically generates a secure username and password. To find it, run this command in your terminal:
+   ```bash
+   docker logs nifi | Select-String -Pattern "Generated"
+   ```
+   *Use those credentials to log into the web interface.*
 ## Building the Flow for Screenshots
 
 Once the NiFi UI is open, you need to create a flow to show in your assignment screenshots.
