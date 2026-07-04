@@ -112,5 +112,67 @@ To address the challenges of creating customized dashboards for different roles 
 1. **Factory Method Pattern**: Implemented to dynamically generate the correct dashboard (`StudentDashboard`, `TeacherDashboard`, `ParentDashboard`) based on the user type, keeping the instantiation logic encapsulated.
 2. **Observer Pattern**: Implemented to handle the notification requirements. The course acts as the Subject, and relevant users (Students, Teachers, Parents) act as Observers who automatically receive updates when the state changes.
 
+### UML Class Diagram (PlantUML)
+```plantuml
+@startuml
+title Smart University LMS - Factory & Observer Patterns
+
+' --- Observer Pattern ---
+interface Observer {
+    +update(message: String)
+}
+
+abstract class Subject {
+    -observers: List<Observer>
+    +attach(observer: Observer)
+    +detach(observer: Observer)
+    +notify(message: String)
+}
+
+class Course {
+    -course_name: String
+    +post_announcement(announcement: String)
+    +upload_grades()
+}
+Subject <|-- Course
+Subject o-> Observer : notifies >
+
+' --- Factory Pattern ---
+abstract class User {
+    -name: String
+    +display_dashboard()
+}
+Observer <|.. User
+
+class Student {
+    +display_dashboard()
+    +update(message: String)
+}
+class Teacher {
+    +display_dashboard()
+    +update(message: String)
+}
+class Parent {
+    +display_dashboard()
+    +update(message: String)
+}
+class Admin {
+    +display_dashboard()
+    +update(message: String)
+}
+
+User <|-- Student
+User <|-- Teacher
+User <|-- Parent
+User <|-- Admin
+
+class UserFactory {
+    +create_user(role: String, name: String): User
+}
+UserFactory ..> User : creates >
+
+@enduml
+```
+
 ### Execution Output (Terminal Screenshot):
 <br><br><br><br><br>

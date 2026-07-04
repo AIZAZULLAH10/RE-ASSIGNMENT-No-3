@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart University LMS - Design Patterns</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.15) 0px, transparent 50%);
+            color: var(--text-light);
+            min-height: 100vh;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            font-weight: 700;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-align: center;
+            background: linear-gradient(to right, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .panel {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .panel h2 {
+            margin-top: 0;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        button:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 15px 20px;
+            border-left: 4px solid var(--primary);
+            animation: slideIn 0.3s ease forwards;
+        }
+
+        .dashboard-card h3 {
+            margin: 0 0 5px 0;
+            font-size: 1.1rem;
+        }
+
+        .dashboard-card p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .notification-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .notification-item {
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 8px;
+            padding: 12px 15px;
+            font-size: 0.95rem;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        .notification-item span.user {
+            font-weight: 600;
+            color: #a78bfa;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.1); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.3); }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Smart University LMS</h1>
+    <p class="subtitle">Live Demonstration of Factory & Observer Design Patterns</p>
+
+    <div class="container">
+        <!-- Factory Pattern Panel -->
+        <div class="panel">
+            <h2>🏭 Factory Pattern (Create Users)</h2>
+            <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 0.9rem;">
+                The Factory automatically generates the correct dashboard interface based on the requested user role.
+            </p>
+            <div class="controls">
+                <button onclick="createUser('Student', 'Alice', '#3b82f6')">+ Student</button>
+                <button onclick="createUser('Teacher', 'Mr. Smith', '#10b981')" style="background: #10b981;">+ Teacher</button>
+                <button onclick="createUser('Parent', 'Alice\'s Mom', '#f59e0b')" style="background: #f59e0b;">+ Parent</button>
+            </div>
+            
+            <div class="dashboard-grid" id="dashboardGrid">
+                <!-- Dashboards will appear here -->
+            </div>
+        </div>
+
+        <!-- Observer Pattern Panel -->
+        <div class="panel">
+            <h2>📡 Observer Pattern (Notifications)</h2>
+            <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 0.9rem;">
+                The Course Subject automatically notifies all active (created) Users when an event occurs.
+            </p>
+            <div class="controls">
+                <button onclick="triggerEvent('post_announcement')" style="background: #8b5cf6;">📢 Post Announcement</button>
+                <button onclick="triggerEvent('upload_grades')" style="background: #ec4899;">📝 Upload Grades</button>
+            </div>
+
+            <div class="notification-feed" id="notificationFeed">
+                <div style="color: var(--text-muted); font-style: italic; text-align: center; padding: 20px;">
+                    Waiting for events... (Create users first)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State to hold our active observers (users)
+        const activeUsers = [];
+
+        // Factory Method logic
+        function createUser(role, name, color) {
+            const dashboardGrid = document.getElementById('dashboardGrid');
+            
+            // Add to active users for Observer pattern
+            activeUsers.push({ role, name });
+
+            // Dashboard specifics based on role (Factory Logic)
+            let features = "";
+            if (role === 'Student') features = "View courses, submit assignments, check grades.";
+            else if (role === 'Teacher') features = "Manage courses, grade assignments, post announcements.";
+            else if (role === 'Parent') features = "Monitor academic progress and attendance.";
+
+            // Create UI Card
+            const card = document.createElement('div');
+            card.className = 'dashboard-card';
+            card.style.borderLeftColor = color;
+            card.innerHTML = `
+                <h3 style="color: ${color}">${role} Dashboard: ${name}</h3>
+                <p>${features}</p>
+            `;
+            dashboardGrid.prepend(card);
+            
+            // Clear initial feed message if it's the first user
+            const feed = document.getElementById('notificationFeed');
+            if (feed.innerHTML.includes('Waiting for events')) {
+                feed.innerHTML = '';
+            }
+        }
+
+        // Observer Pattern logic
+        function triggerEvent(eventType) {
+            const feed = document.getElementById('notificationFeed');
+            
+            if (activeUsers.length === 0) {
+                alert("Please create some users in the Factory Panel first so they can receive notifications!");
+                return;
+            }
+
+            if (feed.innerHTML.includes('Waiting for events')) {
+                feed.innerHTML = '';
+            }
+
+            // The Course (Subject) state change
+            let message = "";
+            if (eventType === 'post_announcement') message = "[Mathematics 101] New Announcement: Midterm exam scheduled for next Friday.";
+            if (eventType === 'upload_grades') message = "[Mathematics 101] Grades have been uploaded for all students.";
+
+            // Notify all Observers
+            activeUsers.forEach(user => {
+                const notif = document.createElement('div');
+                notif.className = 'notification-item';
+                notif.innerHTML = `<span class="user">Notification for ${user.role} ${user.name}:</span> ${message}`;
+                feed.prepend(notif);
+            });
+        }
+    </script>
+</body>
+</html>
